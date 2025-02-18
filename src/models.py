@@ -96,3 +96,50 @@ class People(db.Model):
             "uid": self.uid,
             "url": self.url
         }
+
+class Vehicle(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cargo_capacity = db.Column(db.String(120), nullable=False)
+    consumables = db.Column(db.String(120), nullable=False)
+    cost_in_credits = db.Column(db.String(120), nullable=False)
+    created = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    crew = db.Column(db.String(120), nullable=False)
+    edited = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    films = db.Column(db.ARRAY(db.String), nullable=False)
+    image = db.Column(db.String(120), nullable=False)
+    length = db.Column(db.String(120), nullable=False)
+    manufacturer = db.Column(db.String(120), nullable=False)
+    max_atmosphering_speed = db.Column(db.String(120), nullable=False)
+    model = db.Column(db.String(120), nullable=False)
+    name = db.Column(db.String(120), nullable=False)
+    passengers = db.Column(db.String(120), nullable=False)
+    pilots = db.Column(db.ARRAY(db.String), nullable=False)
+    uid = db.Column(db.Integer, unique=True, nullable=False)
+    url = db.Column(db.String(120), nullable=False)
+    vehicle_class = db.Column(db.String(120), nullable=False)
+
+    def __repr__(self):
+        return '<Vehicle %r>' % self.name
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "cargo_capacity": self.cargo_capacity,
+            "consumables": self.consumables,
+            "cost_in_credits": self.cost_in_credits,
+            "created": self.created.isoformat(),
+            "crew": self.crew,
+            "edited": self.edited.isoformat(),
+            "films": self.films,
+            "image": self.image,
+            "length": self.length,
+            "manufacturer": self.manufacturer,
+            "max_atmosphering_speed": self.max_atmosphering_speed,
+            "model": self.model,
+            "name": self.name,
+            "passengers": self.passengers,
+            "pilots": self.pilots,
+            "uid": self.uid,
+            "url": self.url,
+            "vehicle_class": self.vehicle_class
+        }

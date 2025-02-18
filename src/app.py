@@ -12,6 +12,7 @@ from models import db
 from user_routes import user_bp  # Importar el blueprint de user_routes
 from planet_routes import planet_bp  # Importar el blueprint de planet_routes
 from people_routes import people_bp  # Importar el blueprint de people_routes
+from vehicle_routes import vehicle_bp  # Importar el blueprint de vehicle_routes
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
@@ -32,6 +33,7 @@ setup_admin(app)
 app.register_blueprint(user_bp)
 app.register_blueprint(planet_bp)
 app.register_blueprint(people_bp)
+app.register_blueprint(vehicle_bp)
 
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
