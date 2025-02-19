@@ -9,17 +9,47 @@ class UserPeopleFavorites(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     people_id = db.Column(db.Integer, db.ForeignKey('people.id'), primary_key=True)
 
+    @property
+    def user_name(self):
+        user = User.query.get(self.user_id)
+        return user.email if user else 'Unknown'
+
+    @property
+    def people_name(self):
+        people = People.query.get(self.people_id)
+        return people.name if people else 'Unknown'
+
 # Tabla de asociación para favoritos de Planet
 class UserPlanetFavorites(db.Model):
     __tablename__ = 'user_planet_favorites'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'), primary_key=True)
 
+    @property
+    def user_name(self):
+        user = User.query.get(self.user_id)
+        return user.email if user else 'Unknown'
+
+    @property
+    def planet_name(self):
+        planet = Planet.query.get(self.planet_id)
+        return planet.name if planet else 'Unknown'
+
 # Tabla de asociación para favoritos de Vehicle
 class UserVehicleFavorites(db.Model):
     __tablename__ = 'user_vehicle_favorites'
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), primary_key=True)
+
+    @property
+    def user_name(self):
+        user = User.query.get(self.user_id)
+        return user.email if user else 'Unknown'
+
+    @property
+    def vehicle_name(self):
+        vehicle = Vehicle.query.get(self.vehicle_id)
+        return vehicle.name if vehicle else 'Unknown'
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
