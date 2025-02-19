@@ -9,11 +9,11 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
 from models import db
-from user_routes import user_bp  # Importar el blueprint de user_routes
-from planet_routes import planet_bp  # Importar el blueprint de planet_routes
-from people_routes import people_bp  # Importar el blueprint de people_routes
-from vehicle_routes import vehicle_bp  # Importar el blueprint de vehicle_routes
-from favorites_routes import favorites_bp  # Importar el blueprint de favorites_routes
+from routes.user_routes import user_bp  # Importar el blueprint de user_routes
+from routes.planet_routes import planet_bp  # Importar el blueprint de planet_routes
+from routes.people_routes import people_bp  # Importar el blueprint de people_routes
+from routes.vehicle_routes import vehicle_bp  # Importar el blueprint de vehicle_routes
+from routes.favorites_routes import favorites_bp  # Importar el blueprint de favorites_routes
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
