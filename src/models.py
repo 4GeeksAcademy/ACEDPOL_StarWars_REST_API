@@ -3,59 +3,41 @@ from datetime import datetime, timezone
 
 db = SQLAlchemy()
 
+# Tabla de asociación para favoritos de People
+class UserPeopleFavorites(db.Model):
+    __tablename__ = 'user_people_favorites'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    people_id = db.Column(db.Integer, db.ForeignKey('people.id'), primary_key=True)
+
+# Tabla de asociación para favoritos de Planet
+class UserPlanetFavorites(db.Model):
+    __tablename__ = 'user_planet_favorites'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'), primary_key=True)
+
+# Tabla de asociación para favoritos de Vehicle
+class UserVehicleFavorites(db.Model):
+    __tablename__ = 'user_vehicle_favorites'
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    vehicle_id = db.Column(db.Integer, db.ForeignKey('vehicle.id'), primary_key=True)
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    favorite_people = db.relationship('People', secondary='user_people_favorites', backref=db.backref('favorited_by', lazy='dynamic'))
+    favorite_planets = db.relationship('Planet', secondary='user_planet_favorites', backref=db.backref('favorited_by', lazy='dynamic'))
+    favorite_vehicles = db.relationship('Vehicle', secondary='user_vehicle_favorites', backref=db.backref('favorited_by', lazy='dynamic'))
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.email
 
     def serialize(self):
         return {
             "id": self.id,
             "email": self.email,
             # do not serialize the password, its a security breach
-        }
-
-class Planet(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    climate = db.Column(db.String(120), nullable=False)
-    created = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
-    diameter = db.Column(db.String(120), nullable=False)
-    edited = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
-    gravity = db.Column(db.String(120), nullable=False)
-    image = db.Column(db.String(120), nullable=False)
-    name = db.Column(db.String(120), nullable=False)
-    orbital_period = db.Column(db.String(120), nullable=False)
-    population = db.Column(db.String(120), nullable=False)
-    rotation_period = db.Column(db.String(120), nullable=False)
-    surface_water = db.Column(db.String(120), nullable=False)
-    terrain = db.Column(db.String(120), nullable=False)
-    uid = db.Column(db.Integer, unique=True, nullable=False)
-    url = db.Column(db.String(120), nullable=False)
-
-    def __repr__(self):
-        return '<Planet %r>' % self.name
-
-    def serialize(self):
-        return {
-            "id": self.id,
-            "climate": self.climate,
-            "created": self.created.isoformat(),
-            "diameter": self.diameter,
-            "edited": self.edited.isoformat(),
-            "gravity": self.gravity,
-            "image": self.image,
-            "name": self.name,
-            "orbital_period": self.orbital_period,
-            "population": self.population,
-            "rotation_period": self.rotation_period,
-            "surface_water": self.surface_water,
-            "terrain": self.terrain,
-            "uid": self.uid,
-            "url": self.url
         }
 
 class People(db.Model):
@@ -93,6 +75,45 @@ class People(db.Model):
             "mass": self.mass,
             "name": self.name,
             "skin_color": self.skin_color,
+            "uid": self.uid,
+            "url": self.url
+        }
+    
+class Planet(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    climate = db.Column(db.String(120), nullable=False)
+    created = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    diameter = db.Column(db.String(120), nullable=False)
+    edited = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
+    gravity = db.Column(db.String(120), nullable=False)
+    image = db.Column(db.String(120), nullable=False)
+    name = db.Column(db.String(120), nullable=False)
+    orbital_period = db.Column(db.String(120), nullable=False)
+    population = db.Column(db.String(120), nullable=False)
+    rotation_period = db.Column(db.String(120), nullable=False)
+    surface_water = db.Column(db.String(120), nullable=False)
+    terrain = db.Column(db.String(120), nullable=False)
+    uid = db.Column(db.Integer, unique=True, nullable=False)
+    url = db.Column(db.String(120), nullable=False)
+
+    def __repr__(self):
+        return '<Planet %r>' % self.name
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "climate": self.climate,
+            "created": self.created.isoformat(),
+            "diameter": self.diameter,
+            "edited": self.edited.isoformat(),
+            "gravity": self.gravity,
+            "image": self.image,
+            "name": self.name,
+            "orbital_period": self.orbital_period,
+            "population": self.population,
+            "rotation_period": self.rotation_period,
+            "surface_water": self.surface_water,
+            "terrain": self.terrain,
             "uid": self.uid,
             "url": self.url
         }
